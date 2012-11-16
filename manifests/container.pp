@@ -2,5 +2,12 @@
 class puppet-lxc::container {
   # we must remove klogd to avoid bug in multy-read kernel messages
 	package { ["klogd"]: ensure => purged; }
+  file { 
+    '/etc/inittab' :
+      source => "puppet:///modules/puppet-lxc/etc/inittab",
+      owner  => root,
+      group  => root,
+      mode   => 444;
+  }
 }
 
