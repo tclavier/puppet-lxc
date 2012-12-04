@@ -1,38 +1,47 @@
+# get from /usr/share/doc/lxc/examples/lxc-debian.cfg
 ## LXC
 
 # lxc-debconf
-linux-container lxc-debconf/debconf-frontend select noninteractive
+lxc lxc-debconf/debconf-frontend select noninteractive
+lxc lxc-debconf/debconf-priority select critical
 
-linux-container lxc-debconf/distribution string <%= distrib %>
-linux-container lxc-debconf/architecture select
+lxc lxc-debconf/distribution string <%= distrib %>
+lxc lxc-debconf/architecture select
 
-linux-container lxc-debconf/mirror string http://ftp.fr.debian.org/debian/
-linux-container lxc-debconf/mirror-security string http://ftp.fr.debian.org/debian-security/
-linux-container lxc-debconf/mirror-backports string http://ftp.fr.debian.org/debian-backports/
+lxc lxc-debconf/mirror string http://ftp.fr.debian.org/debian/
+lxc lxc-debconf/mirror-security string http://ftp.fr.debian.org/debian-security/
+lxc lxc-debconf/mirror-backports string http://ftp.fr.debian.org/debian-backports/
 
-linux-container lxc-debconf/archives multiselect 
-linux-container lxc-debconf/archive-areas multiselect main 
+lxc lxc-debconf/archives multiselect 
+lxc lxc-debconf/archive-areas multiselect main 
 
-linux-container lxc-debconf/auto boolean true
-linux-container lxc-debconf/capabilities string mac_admin mac_override sys_admin sys_module
+lxc lxc-debconf/auto boolean false
+lxc lxc-debconf/capabilities string mac_admin mac_override sys_admin sys_module
 
-# linux-container
-linux-container lxc-debconf/enable boolean true
-linux-container lxc-debconf/consoles string 6
-linux-container lxc-debconf/hostname string vm17
+lxc lxc-debconf/mount0/comment string
+lxc lxc-debconf/mount0/entry string
 
-linux-container lxc-debconf/eth0/comment string The primary network interface
-linux-container lxc-debconf/eth0/dhcp boolean false
-linux-container lxc-debconf/eth0/mac string <%= mac %>
-linux-container lxc-debconf/eth0/address string <%= ip %>
-linux-container lxc-debconf/eth0/broadcast string <%= ip %>
-linux-container lxc-debconf/eth0/bridge string br0
+# live-config
+live-config live-debconfig/hostname/hostname string <%= name %>
+live-config live-debconfig/ifupdown/eth0-comment string The primary network interface
+live-config live-debconfig/ifupdown/eth0-method select static
+live-config live-debconfig/ifupdown/eth0-address string <%= ip %>
+live-config live-debconfig/ifupdown/eth0-broadcast string <%= ip %>
+#live-config live-debconfig/ifupdown/eth0-gateway string
+#live-config live-debconfig/ifupdown/eth0-netmask string
+#live-config live-debconfig/ifupdown/eth0-network string
+#live-config live-debconfig/ifupdown/nameservers string
+live-config live-debconfig/selinux/enable boolean false
+live-config live-debconfig/sysvinit/lxc-enable boolean true
+live-config live-debconfig/sysvinit/lxc-consoles string 6
 
 # additional packages
-linux-container lxc-debconf/packages string puppet lsb-release 
+lxc lxc-debconf/packages string puppet lsb-release 
 
 # TODO: bad hack to rebuild openssh host key
-linux-container lxc-debconf/late-command string apt-get install --reinstall openssh-server
+lxc lxc-debconf/late-command string apt-get install --reinstall openssh-server
+lxc lxc-debconf/late-host-command string
+
 
 ## System
 
@@ -41,7 +50,18 @@ tzdata tzdata/Areas select Europe
 tzdata tzdata/Zones/Etc select UTC
 tzdata tzdata/Zones/Europe select Paris
 
+# user-setup
+user-setup passwd/make-user boolean false
+#user-setup passwd/user-fullname string System Administration
+#user-setup passwd/username string sysadmin
+#user-setup passwd/user-password password debian
+#user-setup passwd/user-password-again password debian
+#user-setup passwd/user-uid string 1000
+#user-setup passwd/user-default-groups string audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth
+
 # root password
-user-setup passwd/root-password string <%= passwd %>
-user-setup passwd/root-password-again string <%= passwd %>
+user-setup passwd/root-login boolean true
+user-setup passwd/root-password password <%= passwd %>
+user-setup passwd/root-password-again password <%= passwd %>
+user-setup passwd/shadow boolean true
 
