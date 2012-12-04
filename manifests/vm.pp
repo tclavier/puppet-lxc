@@ -1,5 +1,5 @@
 # defined container from host 
-define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
+define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib, $memory='256M' ) {
   file {
     "/var/lib/lxc/${name}/preseed.cfg" :
       owner   => "root",
@@ -13,6 +13,12 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
       require   => Exec ["create ${name} container"],
       subscribe => Exec ["create ${name} container"],
       content   => template("puppet-lxc/interface.erb");
+    "/var/lib/lxc/${name}/config":
+      owner     => "root",
+      group     => "root",
+      mode      => 0444,
+      require   => Exec ["create ${name} container"],
+      content   => template("puppet-lxc/config.erb");
   }
 
   exec {
@@ -22,22 +28,6 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
       refreshonly => false,
       creates     => "/var/lib/lxc/${name}/config";
   }
-
-  augeas { "config ${name}":
-    lens    => "Simplevars.lns",
-    incl    => "/var/lib/lxc/${name}/config",
-    changes => [
-      "set lxc.network.type veth",
-      "set lxc.network.flags up",
-      "set lxc.network.link br0",
-      "set lxc.network.name eth0",
-      "set lxc.network.ipv4 $ip",
-      "set lxc.network.veth.pair veth${name}",
-      "set lxc.network.hwaddr ${mac}",
-      ],
-    require => Exec["create ${name} container"];
-  }
-
 
 }
 
