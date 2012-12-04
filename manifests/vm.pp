@@ -23,7 +23,7 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
       creates     => "/var/lib/lxc/${name}/config";
   }
 
-  augeas { "sudoers":
+  augeas { "config ${name}":
     lens    => "Simplevars.lns",
     incl    => "/var/lib/lxc/${name}/config",
     changes => [
