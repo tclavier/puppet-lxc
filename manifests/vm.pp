@@ -24,7 +24,7 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
   }
 
   augeas { "config ${name}":
-    lens    => "Puppet.lns",
+    lens    => "Dput.lns",
     incl    => "/var/lib/lxc/${name}/config",
     changes => [
       "set lxc.network.type veth",
