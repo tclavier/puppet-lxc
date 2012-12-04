@@ -17,7 +17,7 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
 
   exec {
     "create ${name} container": 
-      command     => "/usr/bin/lxc-create -n ${name} -t debian -- --preseed-file=/var/lib/lxc/${name}/preseed.cfg",
+      command     => "/usr/bin/lxc-create -n ${name} -t debian -- --preseed-file=/var/lib/lxc/${name}/preseed.cfg > /tmp/lxc-${name}.log 2>&1",
       require     => File ["/var/lib/lxc/${name}/preseed.cfg"],
       refreshonly => false,
       creates     => "/var/lib/lxc/${name}/config"
