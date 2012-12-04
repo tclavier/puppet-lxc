@@ -28,13 +28,14 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
     incl    => "/var/lib/lxc/${name}/config",
     changes => [
       "set lxc.network.type veth",
-      "lxc.network.flags up",
-      "lxc.network.link br0",
-      "lxc.network.name eth0",
-      "lxc.network.ipv4 $ip",
-      "lxc.network.veth.pair veth${name}",
-      "lxc.network.hwaddr ${mac}",
+      "set lxc.network.flags up",
+      "set lxc.network.link br0",
+      "set lxc.network.name eth0",
+      "set lxc.network.ipv4 $ip",
+      "set lxc.network.veth.pair veth${name}",
+      "set lxc.network.hwaddr ${mac}",
       ],
+    require => Exec["create ${name} container"];
   }
 
 
