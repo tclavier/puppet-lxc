@@ -23,6 +23,21 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
       creates     => "/var/lib/lxc/${name}/config";
   }
 
+  augeas { "sudoers":
+    lens    => "Simplevars.lns",
+    incl    => "/var/lib/lxc/${name}/config",
+    changes => [
+      "set lxc.network.type veth",
+      "lxc.network.flags up",
+      "lxc.network.link br0",
+      "lxc.network.name eth0",
+      "lxc.network.ipv4 $ip",
+      "lxc.network.veth.pair veth${name}",
+      "lxc.network.hwaddr ${mac}",
+      ],
+    require => File["/var/lib/lxc/${name}/config"];
+  }
+
 
 }
 
