@@ -35,7 +35,7 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib ) {
       "lxc.network.veth.pair veth${name}",
       "lxc.network.hwaddr ${mac}",
       ],
-    require => File["/var/lib/lxc/${name}/config"];
+    require => Exec["create ${name} container"];
   }
 
 
