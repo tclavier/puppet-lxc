@@ -39,7 +39,7 @@ live-config live-debconfig/sysvinit/lxc-consoles string 6
 lxc lxc-debconf/packages string puppet lsb-release 
 
 # TODO: bad hack to rebuild openssh host key
-lxc lxc-debconf/late-command string apt-get install --reinstall openssh-server
+lxc lxc-debconf/late-command string apt-get install --yes --reinstall openssh-server
 lxc lxc-debconf/late-host-command string
 
 

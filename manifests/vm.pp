@@ -19,6 +19,10 @@ define puppet-lxc::vm ( $ip, $mac, $passwd, $distrib, $memory='256M' ) {
       mode      => 0444,
       require   => Exec ["create ${name} container"],
       content   => template("puppet-lxc/config.erb");
+    "/etc/lxc/auto/${name}" :
+      ensure  => link,
+      require => File["/var/lib/lxc/${name}/config"],
+      target  => "/var/lib/lxc/${name}/config";
   }
 
   exec {
