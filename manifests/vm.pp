@@ -1,5 +1,5 @@
 # defined container from host 
-define puppet-lxc::vm ( $memory='256M', $ip, $mac, $passwd, $distrib) {
+define puppet-lxc::vm ( $memory='256M', $boot=True, $ip, $mac, $passwd, $distrib) {
   file {
     "/var/lib/lxc/${name}/preseed.cfg" :
       owner   => "root",
@@ -19,10 +19,15 @@ define puppet-lxc::vm ( $memory='256M', $ip, $mac, $passwd, $distrib) {
       mode      => 0444,
       require   => Exec ["create ${name} container"],
       content   => template("puppet-lxc/config.erb");
-    "/etc/lxc/auto/${name}" :
-      ensure  => link,
-      require => File["/var/lib/lxc/${name}/config"],
-      target  => "/var/lib/lxc/${name}/config";
+  }
+
+  if $boot == True {
+    file {
+      "/etc/lxc/auto/${name}" :
+        ensure  => link,
+        require => File["/var/lib/lxc/${name}/config"],
+        target  => "/var/lib/lxc/${name}/config";
+    }
   }
 
   exec {
