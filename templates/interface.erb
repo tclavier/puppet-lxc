@@ -1,11 +1,12 @@
 <%
+digit = ipaddress.split('.')
 if hebergeur == "ovh"
-  digit = ipaddress.split('.')
   digit[3] = '254'
-  gw = digit.join('.')
 else 
-  gw = ipaddress
+  digit[3] = '1'
 end
+gw = digit.join('.')
+
 %>
 #
 # File managed by puppet directly on hyperviser
