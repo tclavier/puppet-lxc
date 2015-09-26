@@ -32,14 +32,14 @@ class puppet-lxc::controlling_host {
 		subscribe   => File["/etc/default/grub"];
 	}
 
-	mount {'mount_cgroup' : 
-		name => '/cgroup',
-		atboot => true,
-		device => 'cgroup',
-		ensure => mounted,
-		fstype => 'cgroup',
-		options => 'defaults',
-		remounts => false;
-	}
+  #	mount {'mount_cgroup' : 
+  #		name => '/cgroup',
+  #		atboot => true,
+  #		device => 'cgroup',
+  #		ensure => mounted,
+  #		fstype => 'cgroup',
+  #		options => 'defaults',
+  #		remounts => false;
+  #	}
 }
 
