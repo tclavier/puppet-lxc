@@ -2,6 +2,7 @@
 class puppet-lxc::container {
   # we must remove klogd to avoid bug in multy-read kernel messages
 	package { ["klogd"]: ensure => purged; }
+	package { ["sysvinit-core"]: ensure => installed; }
   file { 
     '/etc/inittab' :
       source => "puppet:///modules/puppet-lxc/etc/inittab",
